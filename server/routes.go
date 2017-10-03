@@ -4,6 +4,8 @@ import (
     "net/http"
 )
 
+var controller = &Handler{Repository: Repository{}}
+
 type Route struct {
     Name        string
     Method      string
@@ -19,7 +21,7 @@ var routes = Routes{
         "Index",
         "GET",
         "/",
-        Index,
+        controller.Index,
     },
     Route{
         "ParentIndex",

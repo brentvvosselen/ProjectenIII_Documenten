@@ -3,9 +3,10 @@ package main
 import (
  "fmt"
  "log"
+ "github.com/server/models"
  "gopkg.in/mgo.v2"
  "gopkg.in/mgo.v2/bson"
- "github.com/server/models"
+ 
 )
 
 //Repository ...
@@ -18,14 +19,14 @@ const DBNAME = "heenenweer"
 const DOCNAME = "parents"
 
 // GetParents returns a list of parents
-func (r Repository) GetParents() Parents {
+func (r Repository) GetParents() models.Parents {
   session, err := mgo.Dial(SERVER)
   if err != nil {
     fmt.Println("Failed to establish connection to Mongo server:", err)
   }
   defer session.Close()
   c := session.DB(DBNAME).C(DOCNAME)
-  results := Parents{}
+  results := models.Parents{}
   if err := c.Find(nil).All(&results); err != nil {
     fmt.Println("Failed to write results:", err)
   }
@@ -33,7 +34,7 @@ func (r Repository) GetParents() Parents {
 }
 
 // AddParents adds a parent in the db
-func (r Repository) AddParent(parent Parent) bool {
+func (r Repository) AddParent(parent models.Parent) bool {
  session, err := mgo.Dial(SERVER)
  defer session.Close()
  parent.ID = bson.NewObjectId()
@@ -46,7 +47,7 @@ func (r Repository) AddParent(parent Parent) bool {
 }
 
 // UpdateParent updates a parent(not used for now)
-func (r Repository) UpdateParent(parent Parent) bool {
+func (r Repository) UpdateParent(parent models.Parent) bool {
  session, err := mgo.Dial(SERVER)
  defer session.Close()
  parent.ID = bson.NewObjectId()
